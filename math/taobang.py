@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         table_widget.setItem(4,0, QTableWidgetItem("Xylanh 4"))
 
 # Value
-        value_1 = 123
+        value_1 = 1234
         name_1 = "{}".format(value_1)
 
         value_2 = 234
