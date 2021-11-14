@@ -51,7 +51,9 @@ class Ui_MainWindow(object):
         self.scene = QtWidgets.QGraphicsScene(self.graphicsView)
         self.graphicsView.setScene(self.scene)
         pos = [0,0]
+        # Count number of values in list Filename 
         k = 0
+        # Count value in list Filenames
         i = 0
         for file in filenames:
             img = QtGui.QImage(file)
