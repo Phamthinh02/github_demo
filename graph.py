@@ -50,8 +50,10 @@ class Ui_MainWindow(object):
         filenames,_ = QtWidgets.QFileDialog.getOpenFileNames()
         self.scene = QtWidgets.QGraphicsScene(self.graphicsView)
         self.graphicsView.setScene(self.scene)
+        # Position imge
         pos = [0,0]
         pos_2 = [0,0]
+        # Pixel image
         pixel = [760,380]
         # Count number of values in list Filename 
         k = 0
