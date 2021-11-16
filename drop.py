@@ -23,7 +23,7 @@ class ImageLabel(QLabel):
     def setPixmap(self, image):
         super().setPixmap(image)
 
-class AppDemo(QWidget):
+class Mainwindow(QWidget):
     def __init__(self):
         super().__init__()
         self.resize(400, 400)
@@ -71,6 +71,6 @@ class AppDemo(QWidget):
         
         
 app = QApplication(sys.argv)
-demo = AppDemo()
-demo.show()
+main = Mainwindow()
+main.show()
 sys.exit(app.exec_())
