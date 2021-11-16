@@ -9,12 +9,10 @@ import cv2
 
 
 class ImageLabel(QLabel):
-    def __init__(self, parent = None):
-        super(ImageLabel, self).__init__(parent)
-        self.setAcceptDrops(True)
-        
+    def __init__(self):
+        super().__init__()
+
         self.setAlignment(Qt.AlignCenter)
-        
         self.setText('\n\n Drop Image Here \n\n')
         self.setStyleSheet('''
             QLabel{
@@ -24,30 +22,11 @@ class ImageLabel(QLabel):
 
     def setPixmap(self, image):
         super().setPixmap(image)
-    
-    def dragEnterEvent(self, event):
-        event.accept()
-
-    def dragMoveEvent(self, event):
-        event.accept()
-        
-    def dragLeaveEvent(self, event):
-        event.accept()
-        
-    def dropEvent(self, event):
-        event.accept()
-        item = QGraphicsPixmapItem(QPixmap("images/{}".format("x")))
-        item.setFlags(QGraphicsItem.ItemIsSelectable|
-                      QGraphicsItem.ItemIsMovable)
-        position = QCursor.pos()
-        item.setOffset(QPointF(position))
-        self.addItem(item)
-        
 
 class AppDemo(QWidget):
     def __init__(self):
         super().__init__()
-        self.resize(600, 600)
+        self.resize(400, 400)
         self.setAcceptDrops(True)
 
         mainLayout = QVBoxLayout()
@@ -57,33 +36,36 @@ class AppDemo(QWidget):
 
         self.setLayout(mainLayout)
 
-    def pictureDropped(self, l):
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasImage:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasImage:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        pos = [0,0]
         pixel = [500,500]
-        for url in l:
-            if os.path.exists(url):
-                print(url)
-                icon = QIcon(url)
-                pixmap = icon.pixmap(72, 72)
-                icon = QIcon(pixmap)
-                item = QListWidgetItem(url, self.view)
-                item.setIcon(icon)
-                item.setStatusTip(url)
+        if event.mimeData().hasImage:
+            event.setDropAction(Qt.CopyAction)
+            file_path = event.mimeData().urls()[0].toLocalFile()
+            img = QtGui.QImage(file_path)
+            img = img.scaled(pixel[0], pixel[1])
+            self.photoViewer.setPixmap(QPixmap(img))
+            self.set_image(img)
+
+            event.accept()
+        else:
+            event.ignore()
+
+    def set_image(self, file_path):
+        self.photoViewer.setPixmap(QPixmap(file_path))
                 
-    # def dropEvent(self, event):
-    #     pos = [0,0]
-    #     pixel = [500,500]
-    #     event.setDropActions(Qt.CopyAction)
-        
-    #     if event.mimeData().hasUrls:
-    #         file_path = event.mimeData().urls()[0].toLocalFile()
-    #         img = QtGui.QImage(file_path)
-    #         img = img.scaled(pixel[0], pixel[1])
-    #         self.photoViewer.setPixmap(QPixmap(img))
-
-
-    #         event.accept()
-    #     else:
-    #         event.ignore()
 
 
         
