@@ -53,6 +53,7 @@ class Mainwindow(QWidget):
         pixel = [500,500]
         if event.mimeData().hasImage:
             event.setDropAction(Qt.CopyAction)
+            event.accept()
             file_path = event.mimeData().urls()[0].toLocalFile()
             img = QtGui.QImage(file_path)
             img = img.scaled(pixel[0], pixel[1])
