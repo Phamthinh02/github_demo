@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         
-        self.graphic.clicked.connect(self.ghapic)
+        self.graphic.clicked.connect(self.graphis)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -46,7 +46,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.graphic.setText(_translate("MainWindow", "GRAPHIC"))
 
-    def ghapic (self):
+    def graphis (self):
         filenames,_ = QtWidgets.QFileDialog.getOpenFileNames()
         self.scene = QtWidgets.QGraphicsScene(self.graphicsView)
         self.graphicsView.setScene(self.scene)
