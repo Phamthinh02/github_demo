@@ -8,33 +8,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 
 
-class ImageLabel(QLabel):
+class Mainwindow(QGraphicsView):
     def __init__(self):
         super().__init__()
-
-        self.setAlignment(Qt.AlignCenter)
-        self.setText('\n\n Drop Image Here \n\n')
-        self.setStyleSheet('''
-            QLabel{
-                border: 4px dashed #aaa
-            }
-        ''')
-
-    def setPixmap(self, image):
-        super().setPixmap(image)
-
-class Mainwindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.resize(400, 400)
+        self.resize(1000, 1000)
         self.setAcceptDrops(True)
-
-        mainLayout = QVBoxLayout()
-
-        self.photoViewer = ImageLabel()
-        mainLayout.addWidget(self.photoViewer)
-
-        self.setLayout(mainLayout)
+        self.scene = QtWidgets.QGraphicsScene(self)
+        self.setScene(self.scene)
+        self.setAcceptDrops(True)
+        self.pos = [0,0]
+        self.pos_2 = [0,0]
+        self.pixel = [100,100]
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
@@ -49,24 +33,24 @@ class Mainwindow(QWidget):
             event.ignore()
 
     def dropEvent(self, event):
-        pos = [0,0]
-        pixel = [500,500]
         if event.mimeData().hasImage:
             event.setDropAction(Qt.CopyAction)
             event.accept()
             file_path = event.mimeData().urls()[0].toLocalFile()
             img = QtGui.QImage(file_path)
-            img = img.scaled(pixel[0], pixel[1])
-            self.photoViewer.setPixmap(QPixmap(img))
+            img = img.scaled(self.pixel[0],self.pixel[1])
             self.set_image(img)
 
             event.accept()
         else:
             event.ignore()
 
-    def set_image(self, file_path):
-        self.photoViewer.setPixmap(QPixmap(file_path))
-                
+    def set_image(self, img):
+        Pimax_Item = QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap.fromImage(img))
+        self.scene.addItem(Pimax_Item)
+        Pimax_Item.setOffset(self.pos[0], self.pos[1]) 
+        self.pos[0] += self.pixel[0] + 5
+        self.pos[1] += self.pixel[1] + 5        
 
 
         
