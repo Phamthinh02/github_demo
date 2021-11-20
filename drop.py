@@ -14,6 +14,7 @@ class Mainwindow(QGraphicsView):
         self.resize(1000, 1000)
         self.setAcceptDrops(True)
         self.scene = QtWidgets.QGraphicsScene(self)
+        self.setWindowTitle('Drag & drop')
         self.setScene(self.scene)
         self.setAcceptDrops(True)
         self.pos = [0,0]
