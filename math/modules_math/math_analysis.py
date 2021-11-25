@@ -60,9 +60,17 @@ def Minimum_pressure(Dynamic_compression_ratio):
     
     return Minimum_pressure
 
-def Pressure_discharge(Intake_pressure,Dynamic_compression_ratio,n):
+def Pressure_discharge(Piston_journey,Connecting_rod_length,Compression_ratio,Cylinder_diameter,Intake_pressure,Temperature):
     
-    Pressure_discharge = (((Intake_pressure*0.96)*10**5)*0.000145)*Dynamic_compression_ratio**n
+    Cylinder_pressure = Intake_pressure*0.96
+    SE = ((Piston_journey*20/180)*(1 + math.cos((20*math.pi/2)/180))/2) + Connecting_rod_length - math.sqrt((Connecting_rod_length**2)-(((Piston_journey*20/180)*math.sin((20*math.pi)/180))**2)/4)
+    Ve = (math.pi*(Cylinder_diameter**2)*SE)/4
+    Vc = (math.pi/(4*(Compression_ratio-1)))*(Cylinder_diameter**2)*Piston_journey
+    Dynamic_compression_ratio = (Ve+Vc)/Vc
+    n0 = (8.314/(19.806+0.002095*(Temperature+20)*(Dynamic_compression_ratio**(n-1)+1))+1)
+    Volume = (Dynamic_compression_ratio*Vc-Vc)/10**6
+    n_dynamic = (Temperature/(Temperature+20))*(Dynamic_compression_ratio/(Dynamic_compression_ratio-1))*(Cylinder_pressure/Intake_pressure)
+    Pressure_discharge = (Intake_pressure*Volume*n_dynamic*(Temperature+20)*((Volume**(n0-1))-1))/((n0-1)*Temperature)
     
     return Pressure_discharge
 
